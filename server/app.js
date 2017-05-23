@@ -5,7 +5,7 @@ var express = require('express'),
 
 var app = express();
 var router = express.Router();
-var Articles = require('./models/article');
+var Categories = require('./models/category');
 
 // Setup logger
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
@@ -22,7 +22,7 @@ router.use(function(req, res, next) {
 // middleware to use for all requests
 router.route('/articles')
     .get(function (request, response) {
-        Articles()
+        Categories()
             .then(items => {
                 return items.items.map(item => item.fields);
             })

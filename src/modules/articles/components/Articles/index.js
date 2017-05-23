@@ -13,8 +13,8 @@ const Articles = ({areSettingsLoaded, isLoaderVisible, articles}) => {
                 articles.map((article, index) => {
                   return(
                     <div key={index}>
-                      <h4>{article.productName}</h4>
-                      <p>{article.productDescription}</p>
+                      <h4>{article.title}</h4>
+                      <p>{article.categoryDescription}</p>
                     </div>
                   )
                 })
