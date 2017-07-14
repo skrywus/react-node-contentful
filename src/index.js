@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory } from 'react-router'
-import Root from './Root';
-import './index.css';
+import Routes from './routes';
+import './resources/styles/index.css';
 
 ReactDOM.render(
-    <Root history={hashHistory}/>,
+    <Routes history={hashHistory}/>,
     document.getElementById('root')
 );
