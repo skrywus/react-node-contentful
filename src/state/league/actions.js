@@ -8,6 +8,10 @@ export const GET_LEAGUE_REQUEST = 'LEAGUES/CURRENT/DATA';
 export const SET_CURRENT_LEAGUE_SUCCESS = 'LEAGUE/CURRENT/SET/SUCCESS';
 export const SET_CURRENT_LEAGUE_FAILURE = 'LEAGUE/CURRENT/SET/FAILURE';
 export const SET_FIXTURES_FILTER = 'FIXTURES/SET_FILTER';
+export const ADD_SCORE_REQUEST_SEND = 'FIXTURES/ADD_RESULT/REQUEST_SEND';
+export const ADD_SCORE_REQUEST_SUCCESS = 'FIXTURES/ADD_RESULT/REQUEST_SUCCESS';
+export const ADD_SCORE_REQUEST_FAILURE = 'FIXTURES/ADD_RESULT/REQUEST_FAILURE';
+export const ADD_SCORE_REQUEST_RESET = 'FIXTURES/ADD_RESULT/REQUEST_RESET';
 
 export const loadActiveLeagues = createAction(ACTIVE_LEAGUES_REQUEST_SEND);
 export const loadActiveLeaguesSuccess = createAction(ACTIVE_LEAGUES_REQUEST_SUCCESS);
@@ -17,6 +21,16 @@ export const getLeagueRequest = createAction(GET_LEAGUE_REQUEST);
 export const setCurrentLeagueSuccess = createAction(SET_CURRENT_LEAGUE_SUCCESS);
 export const setCurrentLeagueFailure = createAction(SET_CURRENT_LEAGUE_FAILURE);
 export const setFixturesFilter = createAction(SET_FIXTURES_FILTER);
+export const addScoreRequestSend = createAction(ADD_SCORE_REQUEST_SEND);
+export const addScoreRequestSuccess = createAction(ADD_SCORE_REQUEST_SUCCESS);
+export const addScoreRequestFailure = createAction(ADD_SCORE_REQUEST_FAILURE);
+export const addScoreRequestReset = createAction(ADD_SCORE_REQUEST_RESET);
+
+export const addScoreRequest = (values) => {
+  return function(dispatch) {
+      dispatch(addScoreRequestSend(values));
+  }
+};
 
 export const setFixturesFilterRequest = (value) => {
     return function(dispatch) {

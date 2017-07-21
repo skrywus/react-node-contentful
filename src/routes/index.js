@@ -6,13 +6,22 @@ import { Router, Route } from 'react-router'
 import {createRedux} from './../utils/store';
 
 const store = createRedux({
-    leagues: {
-        loading: false,
-        loaded: false,
-        data: {
-            leagues: {}
+    leagues:
+        {
+            loading: false,
+            loaded: false,
+            leagueLoading: false,
+            leagueLoaded: false,
+            data: {
+                leagues: {},
+                current: 0
+            },
+            fixtures: {
+                filter: ''
+            },
+            addScoreLoading: false,
+            addScoreLoaded: false
         }
-    }
 });
 
 export default (props) => {

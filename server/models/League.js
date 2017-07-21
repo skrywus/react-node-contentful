@@ -9,7 +9,8 @@ export const League = (options) => {
     });
     const league = {
         ...options,
-        table: tableSorted
+        table: tableSorted,
+        progress: getLeagueProgress(table, options.fields.fixtures)
     };
   return league;
 };
@@ -31,16 +32,23 @@ const getPlayerPoints = (playerId, fixtures, player) => {
     fixtures.map((match) => {
         if(match.fields.homeScore !== undefined && match.fields.awayScore !== undefined) {
             if (match.fields.homePlayer.sys.id === playerId) {
-                stats.goalsScored += match.fields.homeScore;
+                stats.goalsScored += match.fields.homeScore||0;
+                stats.goalsConceded += match.fields.awayScore;
                 if (match.fields.homeScore > match.fields.awayScore) {
                     stats.points += 3;
                     stats.wins += 1;
+                } else if(match.fields.homeScore < match.fields.awayScore){
+                    stats.losses += 1;
                 }
             }
             if (match.fields.awayPlayer.sys.id === playerId) {
-                stats.goalsConceded += match.fields.awayScore;
-                if (match.fields.homeScore < match.fields.awayScore) {
+                stats.goalsScored += match.fields.awayScore||0;
+                stats.goalsConceded += match.fields.homeScore;
+                if (match.fields.homeScore > match.fields.awayScore) {
                     stats.losses += 1;
+                } else if(match.fields.homeScore < match.fields.awayScore) {
+                    stats.points += 3;
+                    stats.wins += 1;
                 }
             }
             if (match.fields.homePlayer.sys.id === playerId || match.fields.awayPlayer.sys.id === playerId) {
@@ -54,4 +62,15 @@ const getPlayerPoints = (playerId, fixtures, player) => {
         }
     });
     return stats;
+};
+
+const getLeagueProgress = (table, fixtures) => {
+    let playedGames = 0;
+    const allGames = fixtures.length||0;
+    table.forEach(player => {
+        playedGames += player.played;
+    });
+
+    const progress = allGames>0?(playedGames/allGames)*100:0;
+    return progress;
 };

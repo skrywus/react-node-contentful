@@ -6,6 +6,8 @@ export const areLeaguesLoaded = state => state.leagues.loaded;
 export const isLeagueLoaded = store => store.leagues.leagueLoaded;
 export const isLeagueLoaderVisible = store => store.leagues.leagueLoading;
 export const currentLeagueKey = store => store.leagues.data.current;
+export const isAddScoreLoading = store => store.leagues.addScoreLoading;
+export const isAddScoreLoaded = state => state.leagues.addScoreLoaded;
 
 export const getLeagueById = (leagues, id) => {
     let selectedLeague = null;

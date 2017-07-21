@@ -1,28 +1,30 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router';
 import {getActiveLeagues, areLeaguesLoaded, isLoaderVisible} from '../../../../state/league/selectors';
 import Loader from '../../../../components/Loader';
 import {Col, Row} from 'react-bootstrap';
 import LeagueFixtures from '../../../fixtures/components/LeagueFixtures';
 import LeagueTable from '../../../table/components/Table/leagueTable';
 import Layout from '../../../../components/Layout';
+import moment from 'moment';
 
-const ActiveLeagues = ({areLeaguesLoaded, isLoaderVisible, leagues}) => {
+const ActiveLeagues = ({areLeaguesLoaded, isLoaderVisible, leagues, isAddScoreLoaded}) => {
   return(
       <Layout>
         { areLeaguesLoaded && !isLoaderVisible ?
-          <Row className="allLeagues">
+          <Row>
               <Col xs={12} md={12}>
               {
-                leagues.map((category, index) => {
+                leagues.map((league, index) => {
                   return(
-                    <Col key={index}>
-                        <div className="leagueName">
-                            <Link to={'/leagues/' + category.sys.id}>{category.fields.name}</Link>
+                    <Col key={index} md={8} className="col-md-offset-2 league-wrapper">
+                        <div className="leagueName text-left">
+                            <a href={'#/leagues/' + league.sys.id}>{league.fields.name}</a>
+                            <p>From: {moment(league.fields.dateStart).format('DD-MM-YYYY')} &nbsp;&nbsp;To: {moment(league.fields.dateEnd).format('DD-MM-YYYY')}</p>
                         </div>
-                        <LeagueTable leagueData={category.table}/>
-                        <LeagueFixtures fixtures={category.fields.fixtures} confirmed={true}/>
+
+                        <LeagueTable leagueData={league.table}/>
+                        <LeagueFixtures fixtures={league.fields.fixtures} confirmed={true}/>
                     </Col>
                   )
                 })

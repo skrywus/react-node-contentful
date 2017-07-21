@@ -7,11 +7,15 @@ import {
     SET_CURRENT_LEAGUE,
     SET_CURRENT_LEAGUE_SUCCESS,
     SET_CURRENT_LEAGUE_FAILURE,
-    SET_FIXTURES_FILTER
+    SET_FIXTURES_FILTER,
+    ADD_SCORE_REQUEST_SEND,
+    ADD_SCORE_REQUEST_SUCCESS,
+    ADD_SCORE_REQUEST_FAILURE,
+    ADD_SCORE_REQUEST_RESET
 } from './actions';
 
 const initialState = {
-    league:
+    leagues:
         {
         loading: false,
         loaded: false,
@@ -23,7 +27,9 @@ const initialState = {
         },
         fixtures: {
             filter: ''
-        }
+        },
+        addScoreLoading: false,
+        addScoreLoaded: false
     }
 };
 
@@ -48,7 +54,8 @@ const actionsHandlers = {
     }),
     [SET_CURRENT_LEAGUE]: (state) => ({
         ...state,
-        leagueLoading: true
+        leagueLoading: true,
+        leagueLoaded: false
     }),
     [SET_CURRENT_LEAGUE_SUCCESS]: (state, action) => ({
         ...state,
@@ -69,6 +76,26 @@ const actionsHandlers = {
         fixtures: {
             filter: action.payload
         }
+    }),
+    [ADD_SCORE_REQUEST_SEND]: (state) => ({
+        ...state,
+        addScoreLoading: true,
+        addScoreLoaded: false
+    }),
+    [ADD_SCORE_REQUEST_SUCCESS]: (state) => ({
+        ...state,
+        addScoreLoading: false,
+        addScoreLoaded: true
+    }),
+    [ADD_SCORE_REQUEST_FAILURE]: (state) => ({
+        ...state,
+        addScoreLoading: false,
+        addScoreLoaded: false
+    }),
+    [ADD_SCORE_REQUEST_RESET]: (state) => ({
+        ...state,
+        addScoreLoading: false,
+        addScoreLoaded: false
     })
 };
 

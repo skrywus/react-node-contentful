@@ -33,7 +33,7 @@ const LeagueTable = ({leagueData}) => {
                                 <td>{player.goalsScored}</td>
                                 <td>{player.goalsConceded}</td>
                                 <td>{player.goalsDiff}</td>
-                                <td>{player.points}</td>
+                                <td><strong>{player.points}</strong></td>
                             </tr>
                         )
                     })

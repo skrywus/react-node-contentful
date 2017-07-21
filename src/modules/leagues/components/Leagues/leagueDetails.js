@@ -2,12 +2,14 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import {Col, Row, FormGroup, FormControl} from 'react-bootstrap';
-import {isLeagueLoaded, isLeagueLoaderVisible, getLeagueDetails} from '../../../../state/league/selectors';
+import {isLeagueLoaded, isLeagueLoaderVisible, getLeagueDetails, isAddScoreLoaded} from '../../../../state/league/selectors';
 import Loader from '../../../../components/Loader';
 import LeagueTable from '../../../table/components/Table/leagueTable';
 import LeagueFixtures from '../../../fixtures/components/LeagueFixtures';
 import {setFixturesFilterRequest} from '../../../../state/league/actions';
 import Layout from '../../../../components/Layout';
+import moment from 'moment';
+import PieChart from 'react-minimal-pie-chart';
 
 class LeagueDetails extends React.Component {
 
@@ -22,17 +24,34 @@ class LeagueDetails extends React.Component {
     };
 
     render() {
-        const {isLoaderVisible, isLeagueLoaded, league, fixtures, filter} = this.props;
+        const {isLoaderVisible, isLeagueLoaded, league, fixtures, filter, isAddScoreLoaded} = this.props;
         return (
             <Layout>
                 { isLeagueLoaded && !isLoaderVisible ?
                     <Row>
-                        <Col xs={12} md={12}>
+                        <Col xs={12}  md={8} className="col-md-offset-2">
                             <Link to={'/'} className='back'>&#x2190; {'Back to Leagues'}</Link>
-                            <h4>{league.fields.name}</h4>
+                            <div className="leagueName text-left">
+                                <h4>{league.fields.name}</h4>
+                                <p>From: {moment(league.fields.dateStart).format('DD-MM-YYYY')} &nbsp;&nbsp;To: {moment(league.fields.dateEnd).format('DD-MM-YYYY')}</p>
+                            </div>
+                            <div className="leagueProgress text-right">
+                                <PieChart
+                                    rounded={true}
+                                    style={{'height': '40px', 'width': '40px'}}
+                                    totalValue={100}
+                                    animate={true}
+                                    lineWidth={20}
+                                    data={[
+                                        { value: league.progress, key: 1, color: '#e90052' },
+                                    ]}
+                                ><span>{Math.round(league.progress)}%</span></PieChart>
+                            </div>
                             <LeagueTable leagueData={league.table}/>
+                            {isAddScoreLoaded && <div className="alert alert-success"><strong>Saved!</strong> Your result has been saved.</div>}
                             <FormGroup className="pull-right">
-                                <FormControl className="search" bsSize="small" type="text" placeholder="Enter player name" name="search" value={filter} onChange={(event) => this.searchFixtures(this.props, event)}/>
+                                <FormControl className="search" bsSize="small" type="text" placeholder="Enter player name" name="search" value={filter}
+                                             onChange={(event) => this.searchFixtures(this.props, event)}/>
                             </FormGroup>
                             <LeagueFixtures fixtures={fixtures} confirmed={false}/>
                         </Col>
@@ -67,7 +86,8 @@ const mapStateToProps = (state) => {
         isLeagueLoaded: isLoaded,
         league,
         fixtures,
-        filter
+        filter,
+        isAddScoreLoaded: isAddScoreLoaded(state)
     };
 };
 

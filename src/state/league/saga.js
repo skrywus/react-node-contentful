@@ -1,17 +1,22 @@
-import {call, put, select, fork} from 'redux-saga/effects';
+import {call, put, select, fork, takeEvery} from 'redux-saga/effects';
 import { router, createHashHistory } from 'redux-saga-router';
 import {getActiveLeagues as fetchLeagues} from '../../selectors/leagues';
 import {getLeagueById} from './selectors';
 import {getActiveLeagues} from '../../state/league/selectors';
-import { loadActiveLeaguesSuccess, loadActiveLeaguesFailure,
-    setCurrentLeagueSuccess, setCurrentLeagueFailure, loadActiveLeagues } from './actions';
+import { loadActiveLeaguesSuccess, loadActiveLeaguesFailure, setCurrentLeague,
+    setCurrentLeagueSuccess, setCurrentLeagueFailure, loadActiveLeagues, ADD_SCORE_REQUEST_SEND,
+    addScoreRequestSuccess, addScoreRequestFailure, addScoreRequestReset} from './actions';
+import {addScore} from './../../selectors/fixture';
 
 const history = createHashHistory();
+let currentLeagueId = null;
 
 const routes = {
     '/leagues/:leagueId': function* leagueSaga({ leagueId }) {
-        yield call(callLeagues);
         try {
+            currentLeagueId = leagueId;
+            yield put(setCurrentLeague());
+            yield call(callLeagues);
             const allLeagues = yield select(getActiveLeagues);
             const leagueKey = yield call(getLeagueById, allLeagues, leagueId);
             yield put(setCurrentLeagueSuccess(leagueKey));
@@ -20,6 +25,7 @@ const routes = {
         }
     },
     '/': function* leaguesSaga() {
+        yield put(addScoreRequestReset());
         yield call(callLeagues);
     }
 };
@@ -34,8 +40,26 @@ function* callLeagues() {
     }
 }
 
+function* addScoreSaga(values) {
+    try {
+        const updatedFixture = yield call(addScore, values);
+        if(updatedFixture) {
+            yield put(addScoreRequestSuccess());
+        } else {
+            yield put(addScoreRequestFailure())
+        }
+        yield put(setCurrentLeague());
+        yield call(callLeagues);
+        const allLeagues = yield select(getActiveLeagues);
+        const leagueKey = yield call(getLeagueById, allLeagues, currentLeagueId);
+        yield put(setCurrentLeagueSuccess(leagueKey));
+    } catch(error) {
+        yield put(loadActiveLeaguesFailure(error));
+    }
+}
+
 function* runWatcher() {
-    //yield call(callLeagues);
+    yield takeEvery(ADD_SCORE_REQUEST_SEND, addScoreSaga);
     yield fork(router, history, routes);
 }
 
