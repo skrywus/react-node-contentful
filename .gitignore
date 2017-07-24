@@ -9,6 +9,7 @@
 # production
 /build
 
+/server/_tokens.js
 # misc
 .DS_Store
 .env
