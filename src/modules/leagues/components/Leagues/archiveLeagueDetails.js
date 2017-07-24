@@ -11,7 +11,7 @@ import Layout from '../../../../components/Layout';
 import moment from 'moment';
 import PieChart from 'react-minimal-pie-chart';
 
-class LeagueDetails extends React.Component {
+class ArchiveLeagueDetails extends React.Component {
 
     componentWillMount() {
         const {setFixturesFilterRequest} = this.props;
@@ -30,7 +30,7 @@ class LeagueDetails extends React.Component {
                 { isLeagueLoaded && !isLoaderVisible ?
                     <Row>
                         <Col xs={12}  md={8} className="col-md-offset-2">
-                            <Link to={'/'} className='back'>&#x2190; {'Back to Leagues'}</Link>
+                            <Link to={'/archive'} className='back'>&#x2190; {'Back to Archive'}</Link>
                             <div className="leagueName text-left">
                                 <h4>{league.fields.name}</h4>
                                 <p>From: {moment(league.fields.dateStart).format('DD-MM-YYYY')} &nbsp;&nbsp;To: {moment(league.fields.dateEnd).format('DD-MM-YYYY')}</p>
@@ -54,7 +54,7 @@ class LeagueDetails extends React.Component {
                                 <FormControl className="search" bsSize="small" type="text" placeholder="Enter player name" name="search" value={filter}
                                              onChange={(event) => this.searchFixtures(this.props, event)}/>
                             </FormGroup>
-                            <LeagueFixtures fixtures={fixtures} confirmed={false}/>
+                            <LeagueFixtures fixtures={fixtures} confirmed={true}/>
                         </Col>
                     </Row>
                     : !error && <Loader/>}
@@ -97,4 +97,4 @@ const mapDispatchToProps = {
     setFixturesFilterRequest
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeagueDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(ArchiveLeagueDetails);

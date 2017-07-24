@@ -11,7 +11,10 @@ import {
     ADD_SCORE_REQUEST_SEND,
     ADD_SCORE_REQUEST_SUCCESS,
     ADD_SCORE_REQUEST_FAILURE,
-    ADD_SCORE_REQUEST_RESET
+    ADD_SCORE_REQUEST_RESET,
+    ARCHIVE_LEAGUES_REQUEST_SEND,
+    ARCHIVE_LEAGUES_REQUEST_SUCCESS,
+    ARCHIVE_LEAGUES_REQUEST_FAILURE,
 } from './actions';
 
 const initialState = {
@@ -29,7 +32,8 @@ const initialState = {
             filter: ''
         },
         addScoreLoading: false,
-        addScoreLoaded: false
+        addScoreLoaded: false,
+        error: null
     }
 };
 
@@ -47,10 +51,11 @@ const actionsHandlers = {
             leagues: action.payload
         }
     }),
-    [ACTIVE_LEAGUES_REQUEST_FAILURE]: (state) => ({
+    [ACTIVE_LEAGUES_REQUEST_FAILURE]: (state, action) => ({
         ...state,
         loading: false,
-        loaded: false
+        loaded: false,
+        error: action.error
     }),
     [SET_CURRENT_LEAGUE]: (state) => ({
         ...state,
@@ -69,7 +74,8 @@ const actionsHandlers = {
     [SET_CURRENT_LEAGUE_FAILURE]: (state) => ({
         ...state,
         leagueLoading: false,
-        leagueLoaded: false
+        leagueLoaded: false,
+        error: true
     }),
     [SET_FIXTURES_FILTER]: (state, action) => ({
         ...state,
@@ -90,13 +96,33 @@ const actionsHandlers = {
     [ADD_SCORE_REQUEST_FAILURE]: (state) => ({
         ...state,
         addScoreLoading: false,
-        addScoreLoaded: false
+        addScoreLoaded: false,
+        error: true
     }),
     [ADD_SCORE_REQUEST_RESET]: (state) => ({
         ...state,
         addScoreLoading: false,
         addScoreLoaded: false
-    })
+    }),
+    [ARCHIVE_LEAGUES_REQUEST_SEND]: (state) => ({
+        ...state,
+        loading: true
+    }),
+    [ARCHIVE_LEAGUES_REQUEST_SUCCESS]: (state, action) => ({
+        ...state,
+        loading: false,
+        loaded: true,
+        data: {
+            ...state.data,
+            leagues: action.payload
+        }
+    }),
+    [ARCHIVE_LEAGUES_REQUEST_FAILURE]: (state) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        error: true
+    }),
 };
 
 export default handleActions(actionsHandlers, initialState);

@@ -3,17 +3,23 @@ import {fetchAllLeagues, fetchActiveLeagues, fetchPastLeagues} from '../reposito
 export const getAllLeagues = () => {
     return fetchAllLeagues()
         .then(leagues => leagues)
-        .catch(error => console.log(error));
+        .catch(error => {
+            throw new Error(error)
+        });
 };
 
 export const getActiveLeagues = () => {
     return fetchActiveLeagues()
         .then(leagues => leagues)
-        .catch(error => console.log(error));
+        .catch(error => {
+            throw new Error(error)
+        });
 };
 
 export const getPastLeagues = () => {
     return fetchPastLeagues()
         .then(leagues => leagues)
-        .catch(error => console.log(error));
+        .catch(error => {
+            throw new Error(error)
+        });
 };

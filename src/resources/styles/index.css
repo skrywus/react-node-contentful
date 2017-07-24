@@ -26,6 +26,9 @@ header .title {
   border-color: #fff;
 }
 
+td, th {
+  border-color: #ccc;
+}
 
 .league-wrapper {
   margin-bottom: 20%;
@@ -67,12 +70,28 @@ header .title {
 .leagueProgress > div > span {
   display: block;
   position: absolute;
-  width: 38px;
+  width: 40px;
   /* height: 10px; */
   color: #242424;
   font-size: 0.9em;
-  margin: -32px 2px;
+  margin: -32px 0px;
   text-align: center;
+}
+
+.menu-nav {
+  padding: 38px 35px 0 10px;
+  width: auto;
+}
+
+.menu-nav > a {
+  color: #fff;
+  font-size: 1.5rem;
+  margin: auto 0;
+  display: block;
+}
+
+.menu-nav > a:hover {
+  color: #fff;
 }
 
 @media only screen and (min-width: 1025px) {

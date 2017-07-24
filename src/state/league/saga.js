@@ -1,17 +1,33 @@
 import {call, put, select, fork, takeEvery} from 'redux-saga/effects';
 import { router, createHashHistory } from 'redux-saga-router';
-import {getActiveLeagues as fetchLeagues} from '../../selectors/leagues';
+import {getActiveLeagues as fetchActiveLeagues, getPastLeagues as fetchArchiveLeagues} from '../../selectors/leagues';
 import {getLeagueById} from './selectors';
-import {getActiveLeagues} from '../../state/league/selectors';
+import {getActiveLeagues, getArchiveLeagues} from '../../state/league/selectors';
 import { loadActiveLeaguesSuccess, loadActiveLeaguesFailure, setCurrentLeague,
     setCurrentLeagueSuccess, setCurrentLeagueFailure, loadActiveLeagues, ADD_SCORE_REQUEST_SEND,
-    addScoreRequestSuccess, addScoreRequestFailure, addScoreRequestReset} from './actions';
+    addScoreRequestSuccess, addScoreRequestFailure, addScoreRequestReset,
+    loadArchiveLeagues, loadArchiveLeaguesSuccess, loadArchiveLeaguesFailure} from './actions';
 import {addScore} from './../../selectors/fixture';
 
 const history = createHashHistory();
 let currentLeagueId = null;
 
 const routes = {
+    '/archive': function* archiveSaga() {
+        yield call(callArchive);
+    },
+    '/archive/:leagueId': function* leagueSaga({ leagueId }) {
+        try {
+            currentLeagueId = leagueId;
+            yield put(setCurrentLeague());
+            yield call(callArchive);
+            const allLeagues = yield select(getArchiveLeagues);
+            const leagueKey = yield call(getLeagueById, allLeagues, leagueId);
+            yield put(setCurrentLeagueSuccess(leagueKey));
+        } catch (error) {
+            yield put(setCurrentLeagueFailure(error));
+        }
+    },
     '/leagues/:leagueId': function* leagueSaga({ leagueId }) {
         try {
             currentLeagueId = leagueId;
@@ -30,10 +46,20 @@ const routes = {
     }
 };
 
+function* callArchive() {
+    try {
+        yield put(loadArchiveLeagues());
+        const leagues = yield call(fetchArchiveLeagues);
+        yield put(loadArchiveLeaguesSuccess(leagues));
+    } catch(error) {
+        yield put(loadArchiveLeaguesFailure(error));
+    }
+}
+
 function* callLeagues() {
     try {
         yield put(loadActiveLeagues());
-        const leagues = yield call(fetchLeagues);
+        const leagues = yield call(fetchActiveLeagues);
         yield put(loadActiveLeaguesSuccess(leagues));
     } catch(error) {
         yield put(loadActiveLeaguesFailure(error));

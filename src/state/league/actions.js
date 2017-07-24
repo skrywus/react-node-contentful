@@ -12,6 +12,9 @@ export const ADD_SCORE_REQUEST_SEND = 'FIXTURES/ADD_RESULT/REQUEST_SEND';
 export const ADD_SCORE_REQUEST_SUCCESS = 'FIXTURES/ADD_RESULT/REQUEST_SUCCESS';
 export const ADD_SCORE_REQUEST_FAILURE = 'FIXTURES/ADD_RESULT/REQUEST_FAILURE';
 export const ADD_SCORE_REQUEST_RESET = 'FIXTURES/ADD_RESULT/REQUEST_RESET';
+export const ARCHIVE_LEAGUES_REQUEST_SEND = 'LEAGUES/ARCHIVE/REQUEST_SEND';
+export const ARCHIVE_LEAGUES_REQUEST_SUCCESS = 'LEAGUES/ARCHIVE/REQUEST_SUCCESS';
+export const ARCHIVE_LEAGUES_REQUEST_FAILURE = 'LEAGUES/ARCHIVE/REQUEST_FAILURE';
 
 export const loadActiveLeagues = createAction(ACTIVE_LEAGUES_REQUEST_SEND);
 export const loadActiveLeaguesSuccess = createAction(ACTIVE_LEAGUES_REQUEST_SUCCESS);
@@ -25,6 +28,9 @@ export const addScoreRequestSend = createAction(ADD_SCORE_REQUEST_SEND);
 export const addScoreRequestSuccess = createAction(ADD_SCORE_REQUEST_SUCCESS);
 export const addScoreRequestFailure = createAction(ADD_SCORE_REQUEST_FAILURE);
 export const addScoreRequestReset = createAction(ADD_SCORE_REQUEST_RESET);
+export const loadArchiveLeagues = createAction(ARCHIVE_LEAGUES_REQUEST_SEND);
+export const loadArchiveLeaguesSuccess = createAction(ARCHIVE_LEAGUES_REQUEST_SUCCESS);
+export const loadArchiveLeaguesFailure = createAction(ARCHIVE_LEAGUES_REQUEST_FAILURE);
 
 export const addScoreRequest = (values) => {
   return function(dispatch) {

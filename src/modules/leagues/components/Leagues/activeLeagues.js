@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getActiveLeagues, areLeaguesLoaded, isLoaderVisible} from '../../../../state/league/selectors';
+import {getActiveLeagues, areLeaguesLoaded, isLoaderVisible, getError} from '../../../../state/league/selectors';
 import Loader from '../../../../components/Loader';
 import {Col, Row} from 'react-bootstrap';
 import LeagueFixtures from '../../../fixtures/components/LeagueFixtures';
@@ -8,7 +8,7 @@ import LeagueTable from '../../../table/components/Table/leagueTable';
 import Layout from '../../../../components/Layout';
 import moment from 'moment';
 
-const ActiveLeagues = ({areLeaguesLoaded, isLoaderVisible, leagues, isAddScoreLoaded}) => {
+const ActiveLeagues = ({areLeaguesLoaded, isLoaderVisible, leagues, error}) => {
   return(
       <Layout>
         { areLeaguesLoaded && !isLoaderVisible ?
@@ -24,14 +24,14 @@ const ActiveLeagues = ({areLeaguesLoaded, isLoaderVisible, leagues, isAddScoreLo
                         </div>
 
                         <LeagueTable leagueData={league.table}/>
-                        <LeagueFixtures fixtures={league.fields.fixtures} confirmed={true}/>
+                        <LeagueFixtures fixtures={league.fields.fixtures} confirmed={true} limit={5}/>
                     </Col>
                   )
                 })
               }
               </Col>
           </Row>
-        : <Loader/>}
+        : !error && <Loader/>}
       </Layout>
   )
 };
@@ -40,7 +40,8 @@ const mapStateToProps = (state) => {
     return {
         leagues: getActiveLeagues(state),
         isLoaderVisible: isLoaderVisible(state),
-        areLeaguesLoaded: areLeaguesLoaded(state)
+        areLeaguesLoaded: areLeaguesLoaded(state),
+        error: getError(state)
     };
 };
 
