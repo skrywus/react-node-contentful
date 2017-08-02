@@ -9,7 +9,8 @@ import LeagueFixtures from '../../../fixtures/components/LeagueFixtures';
 import {setFixturesFilterRequest} from '../../../../state/league/actions';
 import Layout from '../../../../components/Layout';
 import moment from 'moment';
-import PieChart from 'react-minimal-pie-chart';
+import LeagueProgressChart from './leagueProgressChart';
+import filterFixtures from './../../../../selectors/filterFixtures';
 
 class ArchiveLeagueDetails extends React.Component {
 
@@ -35,21 +36,11 @@ class ArchiveLeagueDetails extends React.Component {
                                 <h4>{league.fields.name}</h4>
                                 <p>From: {moment(league.fields.dateStart).format('DD-MM-YYYY')} &nbsp;&nbsp;To: {moment(league.fields.dateEnd).format('DD-MM-YYYY')}</p>
                             </div>
-                            <div className="leagueProgress text-right">
-                                <PieChart
-                                    rounded={true}
-                                    style={{'height': '40px', 'width': '40px'}}
-                                    totalValue={100}
-                                    animate={true}
-                                    lineWidth={8}
-                                    data={[
-                                        { value: league.progress, key: 1, color: '#e90052' },
-                                        { value: (100-league.progress), key: 2, color: '#ccc' }
-                                    ]}
-                                ><span>{Math.round(league.progress)}%</span></PieChart>
-                            </div>
+                            <LeagueProgressChart progress={league.progress}/>
                             <LeagueTable leagueData={league.table}/>
-                            {isAddScoreLoaded && <div className="alert alert-success"><strong>Saved!</strong> Your result has been saved.</div>}
+                            { isAddScoreLoaded &&
+                                <div className="alert alert-success"><strong>Saved!</strong> Your result has been saved.</div>
+                            }
                             <FormGroup className="pull-right">
                                 <FormControl className="search" bsSize="small" type="text" placeholder="Enter player name" name="search" value={filter}
                                              onChange={(event) => this.searchFixtures(this.props, event)}/>
@@ -61,20 +52,6 @@ class ArchiveLeagueDetails extends React.Component {
             </Layout>
         )
     }
-};
-
-const filterFixtures = (league, filter, isLoaded) => {
-
-    if(isLoaded) {
-        filter = filter.toLowerCase().trim();
-        return league.fields.fixtures.filter(fixture => {
-            const homePlayer = fixture.fields.homePlayer.fields.name.toLowerCase();
-            const awayPlayer = fixture.fields.awayPlayer.fields.name.toLowerCase();
-
-            return homePlayer.indexOf(filter) !== -1 || awayPlayer.indexOf(filter) !== -1;
-        });
-    }
-    return league;
 };
 
 const mapStateToProps = (state) => {

@@ -13,9 +13,6 @@ const history = createHashHistory();
 let currentLeagueId = null;
 
 const routes = {
-    '/archive': function* archiveSaga() {
-        yield call(callArchive);
-    },
     '/archive/:leagueId': function* leagueSaga({ leagueId }) {
         try {
             currentLeagueId = leagueId;
@@ -27,6 +24,9 @@ const routes = {
         } catch (error) {
             yield put(setCurrentLeagueFailure(error));
         }
+    },
+    '/archive': function* archiveSaga() {
+        yield call(callArchive);
     },
     '/leagues/:leagueId': function* leagueSaga({ leagueId }) {
         try {

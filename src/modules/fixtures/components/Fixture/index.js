@@ -47,20 +47,20 @@ class Fixture extends React.Component {
                 <Col xs={4} md={5} className="text-right"><span>{game.fields.homePlayer.fields.name}</span></Col>
                 {game.fields.homeScore && game.fields.awayScore ?
                     <Col xs={4} md={2} lg={2} className="text-center result">
-                        {scoreSaved?"saved":<span>{game.fields.homeScore} : {game.fields.awayScore}</span>}
+                        <span>{game.fields.homeScore} : {game.fields.awayScore}</span>
                     </Col> :
                     <Col xs={4} md={2} lg={2} className="text-center addScore">
                         {addScoreVisible && !scoreSaving && !scoreSaved &&
                         <Col>
                             <form onSubmit={this.addScoreSubmit.bind(this)}>
                                 <FormGroup className="addScoreForm col-lg-4">
-                                    <FormControl className="scoreInput" bsSize="small" type="number" placeholder="0" name="homeScore"/>
+                                    <FormControl className="scoreInput" bsSize="small" type="number" placeholder="0" min="0" max="99" name="homeScore"/>
                                 </FormGroup>
                                 <FormGroup className="addScoreForm col-lg-4">
                                     :
                                 </FormGroup>
                                 <FormGroup className="addScoreForm col-lg-4">
-                                    <FormControl className="scoreInput" bsSize="small" type="number" placeholder="0" name="awayScore"/>
+                                    <FormControl className="scoreInput" bsSize="small" type="number" placeholder="0" min="0" max="99" name="awayScore"/>
                                 </FormGroup>
                                 <FormGroup className="addScoreFormButton col-lg-6">
                                     <FormControl className="scoreInput" bsSize="small" type="submit" value="save" placeholder="0" name="save"/>
